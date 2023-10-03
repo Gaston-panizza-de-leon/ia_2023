@@ -53,8 +53,14 @@ class AspiradorTaula(Aspirador):
 class AspiradorReflex(Aspirador):
     def actua(self, percepcio: entorn.Percepcio) -> entorn.Accio:
         """ IMPLEMENTAR """
+        return AspiradorTaula.TAULA[
+            (percepcio[Sensor.LLOC], percepcio[Sensor.ESTAT])
+        ]
 
 
 class AspiradorMemoria(Aspirador):
     def actua(self, percepcio: entorn.Percepcio) -> entorn.Accio:
         """ IMPLEMENTAR """
+        return AspiradorTaula.TAULA[
+            (percepcio[Sensor.LLOC], percepcio[Sensor.ESTAT])
+        ]
