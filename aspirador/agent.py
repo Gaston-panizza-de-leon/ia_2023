@@ -53,14 +53,29 @@ class AspiradorTaula(Aspirador):
 class AspiradorReflex(Aspirador):
     def actua(self, percepcio: entorn.Percepcio) -> entorn.Accio:
         """ IMPLEMENTAR """
-        return AspiradorTaula.TAULA[
-            (percepcio[Sensor.LLOC], percepcio[Sensor.ESTAT])
-        ]
 
 
 class AspiradorMemoria(Aspirador):
     def actua(self, percepcio: entorn.Percepcio) -> entorn.Accio:
-        """ IMPLEMENTAR """
-        return AspiradorTaula.TAULA[
-            (percepcio[Sensor.LLOC], percepcio[Sensor.ESTAT])
-        ]
+        memoria = self.get_memoria(1)
+
+        if memoria is None:
+            memoria = {
+                Localitzacio.HABITACIO_ESQ: False,
+                Localitzacio.HABITACIO_DRET: False,
+            }
+
+        if percepcio[Sensor.ESTAT] == EstatHabitacio.BRUT:
+            return AccionsAspirador.ASPIRA
+
+        memoria[percepcio[Sensor.LLOC]] = True
+
+        self.set_memoria(memoria)
+
+        if memoria[Localitzacio.HABITACIO_ESQ] and memoria[Localitzacio.HABITACIO_DRET]:
+            return AccionsAspirador.ATURA
+
+        if percepcio[Sensor.LLOC] == Localitzacio.HABITACIO_ESQ:
+            return AccionsAspirador.DRETA
+        else:
+            return AccionsAspirador.ESQUERRA
